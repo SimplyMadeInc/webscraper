@@ -13,4 +13,23 @@ class Recipe:
 	def __get__(self):
 		return(self.url, self.name, self.description, self.author, self.servings, self.ingredients, self.steps)
 
-##this is a change
+    def get_url(self):
+		return(self.url)
+
+	def get_name(self):
+		return(self.name)
+
+	def get_description(self):
+		return(self.description)
+
+	def get_author(self):
+		return(self.author)
+
+	def get_servings(self):
+		return(self.servings)
+
+	def get_ingredients(self):
+		return(self.ingredients)
+
+	def get_steps(self):
+		return(self.steps)

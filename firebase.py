@@ -11,10 +11,13 @@ class Firebase:
 
 
     ##writes to firestore db
-    quote = "dude, wassaup"
-    author = "Thong Lam"
-    doc_ref = db.collection(u'sample').document(u'test')
+    doc_ref = db.collection(u'recipes').document(u'test') ##test needs to be recipe ID
     doc_ref.set({
-        u'quote' : quote,
-        u'author' : author,
+        u'url' : recipe.get_url(),
+        u'name' : recipe.get_name(),
+        u'description' : recipe.get_description(),
+        u'author' : recipe.get_author(),
+        u'servings' : recipe.get_servings(),
+        u'ingredients' : recipe.get_ingredients(),
+        u'steps' : recipe.get_steps(),
         })

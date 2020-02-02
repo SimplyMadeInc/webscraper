@@ -24,47 +24,51 @@ class Webscraper:
 	##output the recipe object	
 	def create_recipe_object(recipeList, url):
 		recipeList = recipeList.split('\n')
-		
 
-		##getting and cleaning the ingredients list
-		ingredients = recipeList[17].split('","')
 		idx = 0
-		for i in ingredients:
-			ingredients[idx] = ingredients[idx].strip()
-			ingredients[idx] = ingredients[idx].strip('"')
+		##iterate through recipe list
+		for i in recipeList:
+			##find and set the name of the recipe
+			if ''',"@type": "Recipe"''' in i:
+				name = recipeList[idx + 1]
+				name = name.strip(',"name": "')
+			##find and set the name of the author
+			elif ''',"author": {''' in i:
+				author = recipeList[idx + 2]
+				author = author.strip(',"name": "')
+			##find and set the description
+			elif ''',"description":''' in i:
+				description = recipeList[idx]
+				description = description.strip('        ,"description": "')
+			##find and set the recipe yield
+			elif ''' ,"recipeYield":''' in i:
+				servings = recipeList[idx]
+				servings = servings.strip('        ,"recipeYield": "')
+				servings = servings.strip(' servings')
+			##find the ingredients and put into an array
+			elif ''',"recipeIngredient"''' in i:
+				ingredients = recipeList[idx + 1].split('","')
+				idx2 = 0
+				for i in ingredients:
+					ingredients[idx2] = ingredients[idx2].strip()
+					ingredients[idx2] = ingredients[idx2].strip('"')
+					ingredients[idx2] = ingredients[idx2].replace('\\u0022', '"')
+					idx2 += 1
+			#find the steps and put into an array
+			elif ''',"recipeInstructions":''' in i:
+				steps = recipeList[idx + 1].strip('"},').split("{\"@type\":\"HowToStep\",\"text\":")
+				idx2 = 0
+				steps.pop(0)
+				for i in steps:
+					steps[idx2] = steps[idx2].strip('"},')
+					steps[idx2] = steps[idx2].strip('"')
+					steps[idx2] = steps[idx2].strip('\'')
+					steps[idx2] = steps[idx2].replace('\\u0022', '"')
+					idx2 += 1
+			##if none of the conditions are met just pass
+			else:
+				pass
 			idx += 1
-
-
-
-		##getting and cleaning the recipe steps list
-		steps = recipeList[20].strip('"},').split("{\"@type\":\"HowToStep\",\"text\":")
-		idx = 0
-		steps.pop(0)
-		for i in steps:
-			steps[idx] = steps[idx].strip('"},')
-			steps[idx] = steps[idx].strip('"')
-			steps[idx] = steps[idx].strip('\'')
-			idx += 1
-
-
-		##getting the recipe name:
-		name = recipeList[4]
-		name = name.strip(',"name": "')
-
-
-		##getting the Author
-		author = recipeList[8]
-		author = author.strip(',"name": "')
-
-		##getting the description
-		description = recipeList[13]
-		description = description.strip('        ,"description": "')
-
-		##getting the serving size
-		servings = recipeList[15]
-		servings = servings.strip('        ,"recipeYield": "')
-		servings = servings.strip(' servings')
-		servings = int(servings)
 
 		## ya girl figure this shit out
 		
