@@ -23,7 +23,7 @@ class Webscraper:
 	##take in the raw recipe from website
 	##output the recipe object	
 	def create_recipe_object(recipeList, url):
-		recipeList = recipeList.split('\n')
+		recipeList = recipeHTML.split('\n')
 
 		idx = 0
 		##iterate through recipe list
