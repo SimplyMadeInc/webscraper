@@ -9,15 +9,15 @@ class Webscraper:
 		return url
 
 	##input url to webpage
-	##output raw recipe in list format
+	##output raw recipe
 	def connect_to_webpage(url):
 		webpage = requests.get(url)
 		webpage.raise_for_status()
 		temp = bs4.BeautifulSoup(webpage.text)
 		temp = temp.select('script[type="application/ld+json"]')
 		for i in temp[0]:
-			recipeList = str(i)
-		return recipeList
+			recipeHTML = str(i)
+		return recipeHTML
 
 
 	##take in the raw recipe from website
@@ -75,9 +75,7 @@ class Webscraper:
 		recipe = Recipe(url, name, description, author, servings, ingredients, steps)
 		return recipe
 
-
-
 	def main():
 		url = get_url()
-		recipeList = connect_to_webpage(url)
+		recipeHTML = connect_to_webpage(url)
 		recipe = create_recipe_object(recipeList, url)
