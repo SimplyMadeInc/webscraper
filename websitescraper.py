@@ -1,29 +1,29 @@
-import requests, bs4
+import requests, bs4, Recipe
 
 class Webscraper:
 
 	##grab the url of the 
-	def get_url():
+	def get_url(self):
 		##hardcoded for now
 		url = 'https://www.bonappetit.com/recipe/dashi-oats-with-crunchy-veg'
 		return url
 
 	##input url to webpage
 	##output raw recipe
-	def connect_to_webpage(url):
+	def connect_to_webpage(self, url):
 		webpage = requests.get(url)
 		webpage.raise_for_status()
 		temp = bs4.BeautifulSoup(webpage.text)
 		temp = temp.select('script[type="application/ld+json"]')
 		for i in temp[0]:
-			recipeHTML = str(i)
-		return recipeHTML
+			recipeList = str(i)
+		return recipeList
 
 
 	##take in the raw recipe from website
 	##output the recipe object	
-	def create_recipe_object(recipeList, url):
-		recipeList = recipeHTML.split('\n')
+	def create_recipe_object(self, recipeList, url):
+		recipeList = recipeList.split('\n')
 
 		idx = 0
 		##iterate through recipe list
@@ -74,8 +74,3 @@ class Webscraper:
 		
 		recipe = Recipe(url, name, description, author, servings, ingredients, steps)
 		return recipe
-
-	def main():
-		url = get_url()
-		recipeHTML = connect_to_webpage(url)
-		recipe = create_recipe_object(recipeList, url)
