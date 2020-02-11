@@ -6,7 +6,7 @@ class Webscraper:
 	##grab the url of the 
     def get_url():
 		##hardcoded for now
-        url = 'https://www.bonappetit.com/recipe/dashi-oats-with-crunchy-veg'
+        url = 'https://www.seriouseats.com/recipes/2016/12/the-best-roast-potatoes-ever-recipe.html'
         return url
 
 	##input url to webpage
