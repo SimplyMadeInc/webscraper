@@ -3,37 +3,38 @@ from bs4 import BeautifulSoup
 
 class urlreader:
 
-    def webpageConnect():
-        url = 'https://www.bonappetit.com/sitemap?year=2018&month=9&week=4'
-        #print(test)
+    def webpageConnect(url):
         webpage = requests.get(url)
         webpage.raise_for_status()
         #parse the text of html into a bs4 object
         data = BeautifulSoup(webpage.text)
+        #store it as a string
         data = str(data)
         return data
 
     def getRecipeUrl(data):
-        urlList = data.split('a href')
-
+        #split raw data by link tags
+        urlList = data.split('data-reactid=')
+        f = open("testdata.txt", "a")
         for i in urlList:
+            #filter out only the links with recipes
             if 'https://www.bonappetit.com/recipe/' in i:
-                print(i)
+                begin = i.find('''">''')
+                end = i.find('''</a>''')
+                i = i[begin+2:end]
+                f.write(i + '\n')
             else:
                 pass
-    
-    data = webpageConnect()
-    getRecipeUrl(data)
+        f.close()
 
-
-
-
-  
-
-    #nest loop to get year,month,week values I need
-    def sitemapLoop():
-        for x in range(2016, 2020):
-            for y in range (1,13):
-                for z in range (1,5):
+    def main():
+        #nest loop to get year,month,week values I need
+        for year in range(2016, 2020):
+            for month in range (1,13):
+                for week in range (1,5):
                     #find all base urls that contian the /recipes
-                    print('https://www.bonappetit.com/sitemap?year=' + str(x) +'&month=' + str(y) + '&week=' + str(z))
+                    sitemap = 'https://www.bonappetit.com/sitemap?year=' + str(year) +'&month=' + str(month) + '&week=' + str(week)
+                    data = webpageConnect(sitemap)
+                    getRecipeUrl(data)
+
+    main()
